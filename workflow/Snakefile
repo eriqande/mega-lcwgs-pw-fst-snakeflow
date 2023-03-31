@@ -1,0 +1,56 @@
+
+include: "rules/common.smk"
+
+rule all:
+  input: ALLPW
+
+rule make_bamlists:
+  input:
+    bl=get_bams_in_pop
+  output:
+    bl="results/bamlists/{grp}.txt"
+  shell:
+    "echo {input.bl} | awk '{{for(i=1;i<=NF;i++) print $i}}' > {output.bl}  "
+
+
+rule calc_saf:
+  input: 
+    bl="results/bamlists/{grp}.txt"
+  output:
+    saf="results/saf/{grp}.saf.idx"
+  shell:
+    " PREFIX=$(echo {output.saf} | sed 's/\.saf\.idx$//g;');"
+    " angsd -b {input.bl}  -anc resources/genome.fasta -out $PREFIX -dosaf 1 -gl 1 "
+
+
+
+rule calc_2dsfs:
+  input:
+    saf1="results/saf/{p1}.saf.idx",
+    saf2="results/saf/{p2}.saf.idx",
+  output:
+    sfs="results/sfs/{p1}--x--{p2}.ml"
+  shell:
+    " realSFS {input.saf1} {input.saf2} > {output.sfs} "
+
+
+rule calc_fst_binaries:
+  input:
+    saf1="results/saf/{p1}.saf.idx",
+    saf2="results/saf/{p2}.saf.idx",
+    sfs="results/sfs/{p1}--x--{p2}.ml",
+  output:
+    "results/fst_bin/{p1}--x--{p2}.fst.idx"
+  shell:
+    " PREFIX=$(echo {output} | sed 's/\.fst\.idx$//g;');                             "
+    " realSFS fst index {input.saf1} {input.saf2} -sfs {input.sfs} -fstout $PREFIX   "
+
+
+
+rule extract_fst_values:
+  input:
+    "results/fst_bin/{p1}--x--{p2}.fst.idx"
+  output:
+    "results/fst/{p1}--x--{p2}.txt"
+  shell:
+    "realSFS fst stats {input} > {output}"

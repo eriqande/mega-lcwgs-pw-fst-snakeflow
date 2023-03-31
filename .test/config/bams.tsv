@@ -1,0 +1,8 @@
+sample	path	group
+s001	.test/data/bams/s001.bam	grpA
+s002	.test/data/bams/s002.bam	grpA
+s003	.test/data/bams/s003.bam	grpB
+s004	.test/data/bams/s004.bam	grpB
+s005	.test/data/bams/s005.bam	grpB
+s006	.test/data/bams/s006.bam	grpC
+s007	.test/data/bams/s007.bam	grpC
