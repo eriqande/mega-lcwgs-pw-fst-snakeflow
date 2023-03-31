@@ -1,7 +1,3 @@
-
-
-
-
 bams: ".test/config/bams.tsv"
-
 pwcomps: ".test/config/pwcomps.tsv"
+
