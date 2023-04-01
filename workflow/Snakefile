@@ -1,23 +1,44 @@
+localrules: make_bamlists
 
 include: "rules/common.smk"
 
+
+
 rule all:
   input: ALLPW
+
+
+rule index_fasta:
+  input:
+    genome=config["genome"]
+  output:
+    fai=config["genome"] + ".fai"
+  log:
+    "results/logs/index_fasta/log.txt"
+  shell:
+    " samtools index {input.genome} 2> {log} "
+    
 
 rule make_bamlists:
   input:
     bl=get_bams_in_pop
   output:
     bl="results/bamlists/{grp}.txt"
+  log:
+    "results/logs/make_bamlists/{grp}.txt"
   shell:
-    "echo {input.bl} | awk '{{for(i=1;i<=NF;i++) print $i}}' > {output.bl}  "
+    "echo {input.bl} | awk '{{for(i=1;i<=NF;i++) print $i}}' > {output.bl} 2>{log} "
 
 
 rule calc_saf:
   input: 
+    genome=config["genome"],
+    fai=config["genome"] + ".fai"
     bl="results/bamlists/{grp}.txt"
   output:
     saf="results/saf/{grp}.saf.idx"
+  log:
+    "results/logs/calc_saf/{grp}.txt"
   shell:
     " PREFIX=$(echo {output.saf} | sed 's/\.saf\.idx$//g;');"
     " angsd -b {input.bl}  -anc resources/genome.fasta -out $PREFIX -dosaf 1 -gl 1 "
@@ -30,6 +51,8 @@ rule calc_2dsfs:
     saf2="results/saf/{p2}.saf.idx",
   output:
     sfs="results/sfs/{p1}--x--{p2}.ml"
+  log:
+    "results/logs/calc_2dsfs/{p1}--x--{p2}.txt"
   shell:
     " realSFS {input.saf1} {input.saf2} > {output.sfs} "
 
@@ -41,6 +64,8 @@ rule calc_fst_binaries:
     sfs="results/sfs/{p1}--x--{p2}.ml",
   output:
     "results/fst_bin/{p1}--x--{p2}.fst.idx"
+  log:
+    "results/logs/calc_fst_binaries/{p1}--x--{p2}.txt"
   shell:
     " PREFIX=$(echo {output} | sed 's/\.fst\.idx$//g;');                             "
     " realSFS fst index {input.saf1} {input.saf2} -sfs {input.sfs} -fstout $PREFIX   "
@@ -52,5 +77,7 @@ rule extract_fst_values:
     "results/fst_bin/{p1}--x--{p2}.fst.idx"
   output:
     "results/fst/{p1}--x--{p2}.txt"
+  log:
+    "results/logs/extract_fst_values/{p1}--x--{p2}.txt"
   shell:
     "realSFS fst stats {input} > {output}"
