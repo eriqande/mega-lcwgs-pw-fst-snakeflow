@@ -45,13 +45,14 @@ rule calc_saf:
     cs=config["params"]["calc_saf"]
   output:
     saf="results/saf/{grp}.saf.idx"
+  threads: 20
   log:
     "results/logs/calc_saf/{grp}.txt"
   benchmark:
     "results/benchmarks/calc_saf/{grp}.txt"
   shell:
     " PREFIX=$(echo {output.saf} | sed 's/\.saf\.idx$//g;');"
-    " angsd -b {input.bl}  -anc {input.genome} -ref {input.genome} -out $PREFIX {params.cs} {params.bf} > {log} 2>&1 "
+    " angsd -b {input.bl} -nThreads {threads} -anc {input.genome} -ref {input.genome} -out $PREFIX {params.cs} {params.bf} > {log} 2>&1 "
 
 
 
@@ -63,12 +64,13 @@ rule calc_2dsfs:
     sfs="results/sfs/{p1}--x--{p2}.ml"
   params:
     rs=config["params"]["realSFS"]
+  threads: 20
   log:
     "results/logs/calc_2dsfs/{p1}--x--{p2}.txt"
   benchmark:
     "results/benchmarks/calc_2dsfs/{p1}--x--{p2}.txt"
   shell:
-    " realSFS {params.rs} {input.saf1} {input.saf2} > {output.sfs} 2>{log}"
+    " realSFS -cores {threads} {params.rs} {input.saf1} {input.saf2} > {output.sfs} 2>{log}"
 
 
 rule calc_fst_binaries:
@@ -80,13 +82,14 @@ rule calc_fst_binaries:
     rs=config["params"]["realSFS"]
   output:
     "results/fst_bin/{p1}--x--{p2}.fst.idx"
+  threads: 20
   log:
     "results/logs/calc_fst_binaries/{p1}--x--{p2}.txt"
   benchmark:
     "results/benchmarks/calc_fst_binaries/{p1}--x--{p2}.txt"
   shell:
     " PREFIX=$(echo {output} | sed 's/\.fst\.idx$//g;');                             "
-    " realSFS fst index {params.rs} {input.saf1} {input.saf2} -sfs {input.sfs} -fstout $PREFIX > {log} 2>&1  "
+    " realSFS fst index -cores {threads} {params.rs} {input.saf1} {input.saf2} -sfs {input.sfs} -fstout $PREFIX > {log} 2>&1  "
 
 
 
