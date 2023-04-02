@@ -47,7 +47,7 @@ rule calc_saf:
     saf="results/saf/{grp}.saf.idx"
   threads: 20
   conda:
-    "../envs/angsd.yaml"
+    "envs/angsd.yaml"
   log:
     "results/logs/calc_saf/{grp}.txt"
   benchmark:
@@ -68,7 +68,7 @@ rule calc_2dsfs:
     rs=config["params"]["realSFS"]
   threads: 20
   conda:
-    "../envs/angsd.yaml"
+    "envs/angsd.yaml"
   log:
     "results/logs/calc_2dsfs/{p1}--x--{p2}.txt"
   benchmark:
@@ -88,7 +88,7 @@ rule calc_fst_binaries:
     "results/fst_bin/{p1}--x--{p2}.fst.idx"
   threads: 20
   conda:
-    "../envs/angsd.yaml"
+    "envs/angsd.yaml"
   log:
     "results/logs/calc_fst_binaries/{p1}--x--{p2}.txt"
   benchmark:
@@ -105,7 +105,7 @@ rule extract_fst_values:
   output:
     "results/fst/{p1}--x--{p2}.txt"
   conda:
-    "../envs/angsd.yaml"
+    "envs/angsd.yaml"
   log:
     "results/logs/extract_fst_values/{p1}--x--{p2}.txt"
   benchmark:
