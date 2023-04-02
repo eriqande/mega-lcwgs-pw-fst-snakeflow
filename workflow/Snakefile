@@ -45,7 +45,9 @@ rule calc_saf:
     cs=config["params"]["calc_saf"]
   output:
     saf="results/saf/{grp}.saf.idx"
-  threads: 20
+  threads: 5
+  resources:
+    mem_mb=23000
   conda:
     "envs/angsd.yaml"
   log:
@@ -66,7 +68,9 @@ rule calc_2dsfs:
     sfs="results/sfs/{p1}--x--{p2}.ml"
   params:
     rs=config["params"]["realSFS"]
-  threads: 20
+  threads: 5
+  resources:
+    mem_mb=23000
   conda:
     "envs/angsd.yaml"
   log:
@@ -86,7 +90,9 @@ rule calc_fst_binaries:
     rs=config["params"]["realSFS"]
   output:
     "results/fst_bin/{p1}--x--{p2}.fst.idx"
-  threads: 20
+  threads: 5
+  resources:
+    mem_mb=23000
   conda:
     "envs/angsd.yaml"
   log:
