@@ -1,0 +1,12 @@
+bams: "example-configs/sacto-chinook/bams.tsv"
+pwcomps: "example-configs/sacto-chinook/pwcomps.tsv"
+genome: "resources/genome.fasta"
+
+modes: ["BY_CHROM"]
+chroms: "example-configs/sacto-chinook/chroms.tsv"
+
+
+params:
+  angsd_bam_filters: " -minMapQ 20  -minQ 30 -baq 1 "
+  calc_saf: " -dosaf 1 -gl 1 "
+  realSFS: " -fold 1 "

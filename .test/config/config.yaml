@@ -2,6 +2,9 @@ bams: ".test/config/bams.tsv"
 pwcomps: ".test/config/pwcomps.tsv"
 genome: "resources/genome.fasta"
 
+modes: ["BY_CHROM"]
+chroms: ".test/config/chroms.tsv"
+
 
 params:
   angsd_bam_filters: " -minMapQ 20  -minQ 33 -baq 1 "

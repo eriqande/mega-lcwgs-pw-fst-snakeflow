@@ -37,6 +37,9 @@ bams: ".test/config/bams.tsv"
 pwcomps: ".test/config/pwcomps.tsv"
 genome: "resources/genome.fasta"
 
+modes: ["BY_CHROM"]
+chroms: ".test/config/chroms.tsv"
+
 
 params:
   angsd_bam_filters: " -minMapQ 20  -minQ 33 -baq 1 "
@@ -67,6 +70,13 @@ grpA    grpC
 grpB    grpC
 ```
 
+## Modes
+
+When I started this, I thought I would see what happened if we just did
+the whole genome. That runs into big memory issues. So now I am working
+though having different *modes* one of which is “BY_CHROM” which will do
+things by chromosome. This will, I suspect, become the default mode.
+
 ## Reasons for some choices
 
 See:
@@ -92,3 +102,12 @@ where we see:
 
 So, we will be adding `-fold 1` to the `realSFS` commands done with the
 `params` setting in the config file.
+
+As far as doing it over chromosomes. It seems to me that both angsd and
+realSFS can only take one argument to the `-r` option. So, it seems that
+won’t let you put multiple scaffolds together, which is kinda messed up.
+Maybe I am missing something. For that use case (i.e. when you only have
+a lot of scaffolds) then I suppose one could try to use nSites or one
+could just explicitly grab each region from the bam and make a new bam.
+If I ever have a genome that is in lots of pieces like that, I will do
+it that way. For now I am focusing on single chromosomes.

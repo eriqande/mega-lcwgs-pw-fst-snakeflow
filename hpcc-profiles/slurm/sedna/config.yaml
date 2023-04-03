@@ -25,4 +25,9 @@ use-conda: True
 cluster-status: status-sacct.sh
 cluster-cancel: scancel
 cluster-cancel-nargs: 1000
-
+set-threads:
+  - calc_2dsfs=5
+  - calc_fst_binaries=5
+set-resources:
+  - calc_2dsfs:mem_mb=23000
+  - calc_fst_binaries:mem_mb=23000

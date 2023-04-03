@@ -26,11 +26,11 @@ rule make_bamlists:
   input:
     bl=get_bams_in_pop
   output:
-    bl="results/bamlists/{grp}.txt"
+    bl="results/{mode}/{chunk}/bamlists/{grp}.txt"
   log:
-    "results/logs/make_bamlists/{grp}.txt"
+    "results/logs/make_bamlists/{mode}/{chunk}/{grp}.txt"
   benchmark:
-    "results/benchmarks/make_bamlists/{grp}.txt"
+    "results/benchmarks/make_bamlists/{mode}/{chunk}/{grp}.txt"
   shell:
     "echo {input.bl} | awk '{{for(i=1;i<=NF;i++) print $i}}' > {output.bl} 2> {log} "
 
@@ -39,82 +39,77 @@ rule calc_saf:
   input: 
     genome=config["genome"],
     fai=config["genome"] + ".fai",
-    bl="results/bamlists/{grp}.txt"
+    bl="results/{mode}/{chunk}/bamlists/{grp}.txt"
   params:
     bf=config["params"]["angsd_bam_filters"],
-    cs=config["params"]["calc_saf"]
+    cs=config["params"]["calc_saf"],
+    chunk_opt=get_chunk
   output:
-    saf="results/saf/{grp}.saf.idx"
-  threads: 5
-  resources:
-    mem_mb=23000
+    saf="results/{mode}/{chunk}/saf/{grp}.saf.idx"
   conda:
     "envs/angsd.yaml"
   log:
-    "results/logs/calc_saf/{grp}.txt"
+    "results/logs/calc_saf/{mode}/{chunk}/{grp}.txt"
   benchmark:
-    "results/benchmarks/calc_saf/{grp}.txt"
+    "results/benchmarks/calc_saf/{mode}/{chunk}/{grp}.txt"
   shell:
     " PREFIX=$(echo {output.saf} | sed 's/\.saf\.idx$//g;');"
-    " angsd -b {input.bl} -nThreads {threads} -anc {input.genome} -ref {input.genome} -out $PREFIX {params.cs} {params.bf} > {log} 2>&1 "
+    " angsd -b {input.bl} -nThreads {threads} -anc {input.genome} {params.chunk_opt} "
+    " -ref {input.genome} -out $PREFIX {params.cs} {params.bf} > {log} 2>&1 "
 
 
 
 rule calc_2dsfs:
   input:
-    saf1="results/saf/{p1}.saf.idx",
-    saf2="results/saf/{p2}.saf.idx",
+    saf1="results/{mode}/{chunk}/saf/{p1}.saf.idx",
+    saf2="results/{mode}/{chunk}/saf/{p2}.saf.idx",
   output:
-    sfs="results/sfs/{p1}--x--{p2}.ml"
+    sfs="results/{mode}/{chunk}/sfs/{p1}--x--{p2}.ml"
   params:
-    rs=config["params"]["realSFS"]
-  threads: 5
-  resources:
-    mem_mb=23000
+    rs=config["params"]["realSFS"],
+    chunk_opt=get_chunk
   conda:
     "envs/angsd.yaml"
   log:
-    "results/logs/calc_2dsfs/{p1}--x--{p2}.txt"
+    "results/logs/calc_2dsfs/{mode}/{chunk}/{p1}--x--{p2}.txt"
   benchmark:
-    "results/benchmarks/calc_2dsfs/{p1}--x--{p2}.txt"
+    "results/benchmarks/calc_2dsfs/{mode}/{chunk}/{p1}--x--{p2}.txt"
   shell:
-    " realSFS -cores {threads} {params.rs} {input.saf1} {input.saf2} > {output.sfs} 2>{log}"
+    " realSFS -cores {threads} {params.rs} {params.chunk_opt} {input.saf1} {input.saf2} > {output.sfs} 2>{log}"
 
 
 rule calc_fst_binaries:
   input:
-    saf1="results/saf/{p1}.saf.idx",
-    saf2="results/saf/{p2}.saf.idx",
-    sfs="results/sfs/{p1}--x--{p2}.ml",
+    saf1="results/{mode}/{chunk}/saf/{p1}.saf.idx",
+    saf2="results/{mode}/{chunk}/saf/{p2}.saf.idx",
+    sfs="results/{mode}/{chunk}/sfs/{p1}--x--{p2}.ml",
   params:
-    rs=config["params"]["realSFS"]
+    rs=config["params"]["realSFS"],
+    chunk_opt=get_chunk
   output:
-    "results/fst_bin/{p1}--x--{p2}.fst.idx"
-  threads: 5
-  resources:
-    mem_mb=23000
+    "results/{mode}/{chunk}/fst_bin/{p1}--x--{p2}.fst.idx"
   conda:
     "envs/angsd.yaml"
   log:
-    "results/logs/calc_fst_binaries/{p1}--x--{p2}.txt"
+    "results/logs/calc_fst_binaries/{mode}/{chunk}/{p1}--x--{p2}.txt"
   benchmark:
-    "results/benchmarks/calc_fst_binaries/{p1}--x--{p2}.txt"
+    "results/benchmarks/calc_fst_binaries/{mode}/{chunk}/{p1}--x--{p2}.txt"
   shell:
     " PREFIX=$(echo {output} | sed 's/\.fst\.idx$//g;');                             "
-    " realSFS fst index -cores {threads} {params.rs} {input.saf1} {input.saf2} -sfs {input.sfs} -fstout $PREFIX > {log} 2>&1  "
+    " realSFS fst index -cores {threads} {params.rs} {params.chunk_opt} {input.saf1} {input.saf2} -sfs {input.sfs} -fstout $PREFIX > {log} 2>&1  "
 
 
 
 rule extract_fst_values:
   input:
-    "results/fst_bin/{p1}--x--{p2}.fst.idx"
+    "results/{mode}/{chunk}/fst_bin/{p1}--x--{p2}.fst.idx"
   output:
-    "results/fst/{p1}--x--{p2}.txt"
+    "results/{mode}/{chunk}/fst/{p1}--x--{p2}.txt"
   conda:
     "envs/angsd.yaml"
   log:
-    "results/logs/extract_fst_values/{p1}--x--{p2}.txt"
+    "results/logs/extract_fst_values/{mode}/{chunk}/{p1}--x--{p2}.txt"
   benchmark:
-    "results/benchmarks/extract_fst_values/{p1}--x--{p2}.txt"
+    "results/benchmarks/extract_fst_values/{mode}/{chunk}/{p1}--x--{p2}.txt"
   shell:
     "realSFS fst stats {input} > {output} 2>{log} "
