@@ -46,6 +46,7 @@ rule calc_saf:
     chunk_opt=get_chunk
   output:
     saf="results/{mode}/{chunk}/saf/{grp}.saf.idx"
+  threads: 1
   conda:
     "envs/angsd.yaml"
   log:
@@ -68,6 +69,7 @@ rule calc_2dsfs:
   params:
     rs=config["params"]["realSFS"],
     chunk_opt=get_chunk
+  threads: 1
   conda:
     "envs/angsd.yaml"
   log:
@@ -88,6 +90,7 @@ rule calc_fst_binaries:
     chunk_opt=get_chunk
   output:
     "results/{mode}/{chunk}/fst_bin/{p1}--x--{p2}.fst.idx"
+  threads: 1
   conda:
     "envs/angsd.yaml"
   log:
