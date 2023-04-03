@@ -1,9 +1,9 @@
-bams: "example-configs/sacto-chinook/bams.tsv"
-pwcomps: "example-configs/sacto-chinook/pwcomps.tsv"
+bams: "example-configs/sacto-chinook-3-chrom/bams.tsv"
+pwcomps: "example-configs/sacto-chinook-3-chrom/pwcomps.tsv"
 genome: "resources/genome.fasta"
 
 modes: ["BY_CHROM"]
-chroms: "example-configs/sacto-chinook/chroms.tsv"
+chroms: "example-configs/sacto-chinook-3-chrom/chroms.tsv"
 
 
 params:
