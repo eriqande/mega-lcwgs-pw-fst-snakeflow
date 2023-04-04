@@ -25,6 +25,11 @@ Setting up this workflow for yourself is pretty easy:
 3.  You need a `pwcomps.tsv` that lists the pairwise comparisons from
     the groups in `bams.tsv` that you wish to calculate pairwise Fsts
     for.
+4.  To use `winsfs` (highly recommended because it is orders of
+    magnitude faster than `realSFS`), you need to install it and make
+    sure it is in your path (you don’t have to do this for ANGSD, since
+    that is available on conda). Follow the installation directions at
+    <https://github.com/malthesr/winsfs#installation>
 
 This workflow comes with a small set of data and config files for
 testing in the `.test` directory. This is a good place to go to see
@@ -45,6 +50,7 @@ params:
   angsd_bam_filters: " -minMapQ 20  -minQ 33 -baq 1 "
   calc_saf: " -dosaf 1 -gl 1 "
   realSFS: " -fold 1 "
+  winsfs: " "
   
 ```
 
