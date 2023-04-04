@@ -43,7 +43,7 @@ rule calc_fst_binaries_winsfs:
     "results/{mode}/{chunk}/winsfs_fst_bin/{p1}--x--{p2}.fst.idx"
   threads: 1
   conda:
-    "envs/angsd.yaml"
+    "../envs/angsd.yaml"
   log:
     "results/logs/calc_fst_binaries_winsfs/{mode}/{chunk}/{p1}--x--{p2}.txt"
   benchmark:
@@ -60,7 +60,7 @@ rule extract_fst_values_winsfs:
   output:
     "results/{mode}/{chunk}/winsfs_fst/{p1}--x--{p2}.txt"
   conda:
-    "envs/angsd.yaml"
+    "../envs/angsd.yaml"
   log:
     "results/logs/extract_fst_values_winsfs/{mode}/{chunk}/{p1}--x--{p2}.txt"
   benchmark:
