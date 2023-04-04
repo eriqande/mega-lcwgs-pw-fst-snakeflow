@@ -6,8 +6,8 @@ cluster:
     --mem={resources.mem_mb}
     --time={resources.time}
     --job-name=smk-{rule}-{wildcards}
-    --output=results/slurm_logs/{rule}/{rule}-{wildcards}-%j.out
-    --error=results/slurm_logs/{rule}/{rule}-{wildcards}-%j.err
+    --output=results/slurm_logs/{rule}/%j-{rule}-{wildcards}.out
+    --error=results/slurm_logs/{rule}/%j-{rule}-{wildcards}.err
     --parsable
 default-resources:
   - time="23:00:00"
