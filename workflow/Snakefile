@@ -6,7 +6,7 @@ include: "rules/winsfs-route.smk"
 
 
 rule all:
-  input: ALLPW + ALLWINSFS
+  input: ALLWINSFS
 
 
 rule index_fasta:
