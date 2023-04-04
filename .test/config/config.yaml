@@ -10,4 +10,5 @@ params:
   angsd_bam_filters: " -minMapQ 20  -minQ 33 -baq 1 "
   calc_saf: " -dosaf 1 -gl 1 "
   realSFS: " -fold 1 "
+  winsfs: " "
   

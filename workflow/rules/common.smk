@@ -36,6 +36,7 @@ def get_chunk(wc):
 
 # we first expand by chroms:
 CHROMFS=expand("results/{mode}/{chunk}/fst/{{p1}}--x--{{p2}}.txt", mode=["BY_CHROM"], chunk=chrom_list)
+CHROMWINSFS=expand("results/{mode}/{chunk}/winsfs_fst/{{p1}}--x--{{p2}}.txt", mode=["BY_CHROM"], chunk=chrom_list)
 
 ALLPW=expand(
   CHROMFS,
@@ -43,3 +44,12 @@ ALLPW=expand(
   p1=pwcomps.pop1.tolist(),
   p2=pwcomps.pop2.tolist()
   )
+  
+ALLWINSFS=expand(
+  CHROMWINSFS,
+  zip,
+  p1=pwcomps.pop1.tolist(),
+  p2=pwcomps.pop2.tolist()
+  )
+
+

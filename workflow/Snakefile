@@ -1,12 +1,12 @@
 
-localrules: make_bamlists
+localrules: make_bamlists,fold_winsfs
 
 include: "rules/common.smk"
-
+include: "rules/winsfs-route.smk"
 
 
 rule all:
-  input: ALLPW
+  input: ALLPW + ALLWINSFS
 
 
 rule index_fasta:
@@ -116,3 +116,6 @@ rule extract_fst_values:
     "results/benchmarks/extract_fst_values/{mode}/{chunk}/{p1}--x--{p2}.txt"
   shell:
     "realSFS fst stats {input} > {output} 2>{log} "
+    
+
+
