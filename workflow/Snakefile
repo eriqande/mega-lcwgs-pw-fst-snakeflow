@@ -1,12 +1,14 @@
 
-localrules: make_bamlists,fold_winsfs
+localrules: make_bamlists,fold_winsfs,summarise_average_fst_values
 
 include: "rules/common.smk"
 include: "rules/winsfs-route.smk"
+include: "rules/summarize.smk"
 
 
 rule all:
-  input: ALLWINSFS
+  input:
+    aves=expand("results/{mode}/summarized/all-pw-fsts.tsv", mode=config["modes"])
 
 
 rule index_fasta:
