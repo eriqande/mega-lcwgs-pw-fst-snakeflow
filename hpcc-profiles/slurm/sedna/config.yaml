@@ -27,7 +27,7 @@ cluster-cancel: scancel
 cluster-cancel-nargs: 1000
 set-threads:
   - calc_2dsfs=5
-  - calc_fst_binaries=5
+  - calc_2dsfs_winsfs=4
 set-resources:
   - calc_2dsfs:mem_mb=23000
-  - calc_fst_binaries:mem_mb=23000
+  - calc_2dsfs_winsfs:mem_mb=18400
