@@ -87,3 +87,23 @@ messed up.  Maybe I am missing something.  For that use case (i.e. when you only
 then I suppose one could try to use nSites or one could just explicitly grab each region from the bam and
 make a new bam.  If I ever have a genome that is in lots of pieces like that, I will do it that way.  For
 now I am focusing on single chromosomes.  
+
+## Resource notes
+
+For 16 Chinook salmon individuals from each population and breaking it up by chromosomes,
+I was able to get most everything done with:
+```yaml
+set-threads:
+  - calc_2dsfs_winsfs=4
+set-resources:
+  - calc_2dsfs_winsfs:mem_mb=19200
+```
+
+But, a few of the longer chromosomes failed, and I went back and reran them
+with:
+```yaml
+set-threads:
+  - calc_2dsfs_winsfs=10
+set-resources:
+  - calc_2dsfs_winsfs:mem_mb=47000
+```
