@@ -27,8 +27,10 @@ cluster-status: status-sacct.sh
 cluster-cancel: scancel
 cluster-cancel-nargs: 1000
 set-threads:
+  - calc_saf=4
   - calc_2dsfs=5
   - calc_2dsfs_winsfs=4
 set-resources:
+  - calc_saf:mem_mb=18800
   - calc_2dsfs:mem_mb=24000
   - calc_2dsfs_winsfs:mem_mb=18800
