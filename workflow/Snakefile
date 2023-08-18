@@ -19,7 +19,7 @@ rule index_fasta:
   log:
     "results/logs/index_fasta/log.txt"
   conda:
-    "../envs/samtools.yaml"
+    "envs/samtools.yaml"
   benchmark:
     "results/benchmarks/index_fasta/log.txt"
   shell:
