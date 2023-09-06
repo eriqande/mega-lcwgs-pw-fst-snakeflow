@@ -38,6 +38,16 @@ def get_chunk(wc):
 CHROMFS=expand("results/{mode}/{chunk}/fst/{{p1}}--x--{{p2}}.txt", mode=["BY_CHROM"], chunk=chrom_list)
 CHROMWINSFS=expand("results/{mode}/{chunk}/winsfs_fst/{{p1}}--x--{{p2}}.txt", mode=["BY_CHROM"], chunk=chrom_list)
 
+# these are all the slidiging window estimates for a particular step and window size and p1 and p2
+CHROMWINSLIDE=expand("results/{mode}/{chunk}/fst_sliding_windows/size-{{window_size}}/step-{{window_step}}/{{p1}}--x--{{p2}}.txt", mode=["BY_CHROM"], chunk=chrom_list)
+SUMMWINSLIDE=expand(
+  "results/BY_CHROM/summarized/sliding_window_fst/{p1}--x--{p2}--size-{{window_size}}--step-{{window_step}}.tsv",
+  zip,
+  p1=pwcomps.pop1.tolist(),
+  p2=pwcomps.pop2.tolist()
+  )
+
+
 ALLPW=expand(
   CHROMFS,
   zip,
@@ -52,4 +62,8 @@ ALLWINSFS=expand(
   p2=pwcomps.pop2.tolist()
   )
 
-
+ALLSLIDEWINDOWS=expand(SUMMWINSLIDE,
+  zip,
+  window_size = config["params"]["fst_window_size"],
+  window_step = config["params"]["fst_window_step"]
+  )

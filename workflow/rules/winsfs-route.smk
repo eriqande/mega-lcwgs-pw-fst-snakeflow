@@ -70,3 +70,33 @@ rule extract_fst_values_winsfs:
     
 
 
+
+rule sliding_window_fst_winsfs:
+  input:
+    "results/{mode}/{chunk}/winsfs_fst_bin/{p1}--x--{p2}.fst.idx"
+  output:
+    "results/{mode}/{chunk}/fst_sliding_windows/size-{window_size}/step-{window_step}/{p1}--x--{p2}.txt"
+  conda:
+    "../envs/angsd.yaml"
+  params:
+    wsize = "{window_size}",
+    wstep = "{window_step}"
+  log:
+    "results/logs/sliding_window_fst_winsfs/{mode}/{chunk}/size-{window_size}/step-{window_step}/{p1}--x--{p2}.txt"
+  benchmark:
+    "results/benchmarks/sliding_window_fst_winsfs/{mode}/{chunk}/size-{window_size}/step-{window_step}/{p1}--x--{p2}.txt"
+  shell:
+    "realSFS fst stats2  {input} -win {params.wsize} -step {params.wstep} > {output} 2>{log} "
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -17,3 +17,15 @@ rule summarise_average_fst_values:
     " 'BEGIN {{OFS = \"\t\";}} NF>0 {{print file, $0}}' $i; done; ) > {output} 2>{log} "
 
 
+
+# this just catenates the sliding window estimates from
+# multiple chromosomes, for each 
+rule summarise_sliding_window_fst_values:
+  input:
+    files=CHROMWINSLIDE
+  output:
+    "results/{mode}/summarized/sliding_window_fst/{p1}--x--{p2}--size-{window_size}--step-{window_step}.tsv"
+  log:
+    "results/logs/summarise_sliding_window_fst_values/{mode}/{p1}--x--{p2}--size-{window_size}--step-{window_step}.log"
+  shell:
+    "cat {input.files} > {output} 2> {log} "

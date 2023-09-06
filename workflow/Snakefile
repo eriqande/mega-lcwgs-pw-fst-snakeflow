@@ -8,7 +8,8 @@ include: "rules/summarize.smk"
 
 rule all:
   input:
-    aves=expand("results/{mode}/summarized/all-pw-fsts.tsv", mode=config["modes"])
+    aves=expand("results/{mode}/summarized/all-pw-fsts.tsv", mode=config["modes"]),
+    windows=ALLSLIDEWINDOWS
 
 
 rule index_fasta:
