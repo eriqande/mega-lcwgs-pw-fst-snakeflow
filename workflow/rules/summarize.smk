@@ -28,4 +28,7 @@ rule summarise_sliding_window_fst_values:
   log:
     "results/logs/summarise_sliding_window_fst_values/{mode}/{p1}--x--{p2}--size-{window_size}--step-{window_step}.log"
   shell:
-    "cat {input.files} > {output} 2> {log} "
+    "cat {input.files} | awk '                  "
+    "  BEGIN {{OFS=\"\t\"}}                     "
+    "  /^region/ {{if(NR==1) print; else next}} "
+    "  {{print}} ' > {output} 2> {log}          "
