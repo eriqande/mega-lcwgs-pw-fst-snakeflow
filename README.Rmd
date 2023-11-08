@@ -39,6 +39,7 @@ than `realSFS`), you need to install it and make sure it is in your path (you do
 have to do this for ANGSD, since that is available on conda).  Follow the installation
 directions at https://github.com/malthesr/winsfs#installation
 
+
 This workflow comes with a small set of data and config files for testing in the
 `.test` directory.  This is a good place to go to see examples of the `config` files,
 etc.  I print them out below here, too:
