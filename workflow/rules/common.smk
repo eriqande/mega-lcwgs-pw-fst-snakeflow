@@ -22,6 +22,8 @@ chroms = pd.read_table(config["chroms"], dtype=str).set_index(
 
 chrom_list=chroms.chrom.tolist()
 
+allpops=list(set(pwcomps.pop1.tolist() + pwcomps.pop2.tolist()))
+
 def get_bams_in_pop(wc):
   b=bams.loc[(bams["group"] == wc.grp)]
   return b.path.tolist()
@@ -67,3 +69,7 @@ ALLSLIDEWINDOWS=expand(SUMMWINSLIDE,
   window_size = config["params"]["fst_window_size"],
   window_step = config["params"]["fst_window_step"]
   )
+
+# here, we define outputs for our "edification" 1-D SFS rules
+ALL_1D_REAL=expand("results/{mode}/one_d_realSFS/{chunk}---{p1}.ml", mode=["BY_CHROM"], chunk=chrom_list, p1=allpops)
+ALL_1D_WIN=expand("results/{mode}/one_d_winsfs/{chunk}---{p1}.ml", mode=["BY_CHROM"], chunk=chrom_list, p1=allpops)

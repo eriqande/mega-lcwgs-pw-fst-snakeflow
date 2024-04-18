@@ -4,6 +4,7 @@ localrules: make_bamlists,fold_winsfs,summarise_average_fst_values
 include: "rules/common.smk"
 include: "rules/winsfs-route.smk"
 include: "rules/summarize.smk"
+include: "rules/one-d-sfs-edification.smk"
 
 
 rule all:
