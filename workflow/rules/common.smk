@@ -50,6 +50,30 @@ SUMMWINSLIDE=expand(
   )
 
 
+CHROMSFS=expand("results/{mode}/{chunk}/1dsfs_realsfs/{{p1}}.ml", mode=["BY_CHROM"], chunk=chrom_list)
+CHROMPS=expand("results/{mode}/{chunk}/tajimas_d/{{p1}}.thetas.pestPG", mode=["BY_CHROM"], chunk=chrom_list)
+CHROMPT=expand("results/{mode}/{chunk}/d_sliding_windows/size-{{window_size}}/step-{{window_step}}/{{p1}}.thetasWindow.pestPG", mode=["BY_CHROM"], chunk=chrom_list)
+
+
+SUMMTHETAWIN=expand(
+  "results/BY_CHROM/summarized/sliding_window_theta/{p1}--size-{{window_size}}--step-{{window_step}}.tsv",
+  zip,
+  p1=pwcomps.pop1.tolist()
+)
+
+ALLTHETA=expand(
+  CHROMPS,
+  zip,
+  p1=pwcomps.pop1.tolist()
+)
+
+ALLTHETAWIN=expand(
+  SUMMTHETAWIN,
+  zip,
+  window_size=config["params"]["theta_window_size"],
+  window_step=config["params"]["theta_window_step"]
+)
+
 ALLPW=expand(
   CHROMFS,
   zip,

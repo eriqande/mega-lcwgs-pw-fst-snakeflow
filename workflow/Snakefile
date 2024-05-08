@@ -5,12 +5,15 @@ include: "rules/common.smk"
 include: "rules/winsfs-route.smk"
 include: "rules/summarize.smk"
 include: "rules/one-d-sfs-edification.smk"
+include: "rules/diversity.smk"
 
 
 rule all:
   input:
     aves=expand("results/{mode}/summarized/all-pw-fsts.tsv", mode=config["modes"]),
-    windows=ALLSLIDEWINDOWS
+    thetaaves=expand("results/{mode}/summarized/all-thetas.tsv", mode = config["modes"]),
+    windows=ALLSLIDEWINDOWS,
+    thetawindows=ALLTHETAWIN
 
 
 rule index_fasta:
